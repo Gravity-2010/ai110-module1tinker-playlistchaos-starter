@@ -2,6 +2,7 @@ import streamlit as st
 
 from playlist_logic import (
     DEFAULT_PROFILE,
+    MODE_TO_PLAYLIST,
     Song,
     build_playlists,
     compute_playlist_stats,
@@ -299,7 +300,7 @@ def lucky_section(playlists):
 
     mode = st.selectbox(
         "Pick from",
-        options=["any", "hype", "chill", "mixed"],
+        options=list(MODE_TO_PLAYLIST.keys()),
         index=0,
     )
 

@@ -174,17 +174,27 @@ def search_songs(
     return filtered
 
 
+# Single source of truth for lucky-pick modes. Maps each user-facing mode to
+# the playlist it draws from. None means the special "any" case (Hype + Chill).
+MODE_TO_PLAYLIST = {
+    "any": None,
+    "hype": "Hype",
+    "chill": "Chill",
+    "mixed": "Mixed",
+}
+
+
 def lucky_pick(
     playlists: PlaylistMap,
     mode: str = "any",
 ) -> Optional[Song]:
     """Pick a song from the playlists according to mode."""
-    mode_to_playlist = {"hype": "Hype", "chill": "Chill", "mixed": "Mixed"}
+    key = MODE_TO_PLAYLIST.get(mode)
 
-    if mode in mode_to_playlist:
-        songs = playlists.get(mode_to_playlist[mode], [])
-    else:
+    if key is None:
         songs = playlists.get("Hype", []) + playlists.get("Chill", [])
+    else:
+        songs = playlists.get(key, [])
 
     return random_choice_or_none(songs)
 
